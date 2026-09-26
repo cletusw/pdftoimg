@@ -4,10 +4,16 @@ GlobalWorkerOptions.workerSrc = import.meta.resolve('pdfjs/worker');
 
 document.querySelector('input').addEventListener('change', async (event) => {
   const buffer = await event.target.files[0].arrayBuffer();
-  renderBufferToCanvas(buffer);
+  const canvas = document.getElementById("the-canvas");
+  await renderBufferToCanvas(buffer, canvas);
 });
 
-async function renderBufferToCanvas(buffer) {
+document.querySelector('#download-png').addEventListener('click', async () => {
+  const canvas = document.getElementById("the-canvas");
+  await downloadPNG(canvas);
+});
+
+async function renderBufferToCanvas(buffer, canvas) {
   const pdf = await getDocument({data: buffer}).promise;
   const page = await pdf.getPage(1);
   const base = page.getViewport({ scale: 1 });
@@ -17,8 +23,7 @@ async function renderBufferToCanvas(buffer) {
 
   //
   // Prepare canvas using PDF page dimensions
-  //
-  const canvas = document.getElementById("the-canvas");
+  //;
   const context = canvas.getContext("2d");
 
   canvas.width = Math.floor(viewport.width * outputScale);
@@ -37,4 +42,20 @@ async function renderBufferToCanvas(buffer) {
     viewport,
   };
   page.render(renderContext);
+}
+
+async function downloadPNG(canvas) {
+  canvas.toBlob((blob) => {
+    if (!blob) {
+      alert('Unable to render selected file.');
+      return;
+    }
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'page.png';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }, 'image/png');
 }
