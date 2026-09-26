@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+  <script type="importmap">
+    {
+      "imports": {
+        "pdfjs": "https://unpkg.com/pdfjs-dist@6.3.289/build/pdf.min.mjs",
+      }
+    }
+  </script>
+  <script type="module" src="main.js"></script>
 </head>
 <body>
-    Hi
+  <label>
+    Upload PDF to convert to PNG
+    <input type="file" accept="application/pdf">
+  </label>
 </body>
 </html>
