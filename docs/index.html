@@ -4,7 +4,8 @@
   <script type="importmap">
     {
       "imports": {
-        "pdfjs": "https://unpkg.com/pdfjs-dist@6.3.289/build/pdf.min.mjs"
+        "pdfjs": "https://unpkg.com/pdfjs-dist@6.3.289/build/pdf.mjs",
+        "pdfjs/worker": "https://unpkg.com/pdfjs-dist@6.3.289/build/pdf.worker.mjs"
       }
     }
   </script>
@@ -15,5 +16,6 @@
     Upload PDF to convert to PNG
     <input type="file" accept="application/pdf">
   </label>
+  <canvas id="the-canvas" style="border: 1px solid black; direction: ltr"></canvas>
 </body>
 </html>
